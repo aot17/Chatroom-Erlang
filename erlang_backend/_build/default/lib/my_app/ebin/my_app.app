@@ -1,0 +1,10 @@
+{application,my_app,
+             [{description,"An OTP application"},
+              {vsn,"0.1.0"},
+              {registered,[]},
+              {mod,{my_app_app,[]}},
+              {applications,[kernel,stdlib,cowboy,jsx]},
+              {env,[]},
+              {modules,[http_handler,my_app_app,my_app_sup,session_handler]},
+              {licenses,["Apache-2.0"]},
+              {links,[]}]}.
