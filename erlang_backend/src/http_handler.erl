@@ -2,11 +2,7 @@
 -export([init/2, handle/2, terminate/3]).
 
 init(Req, Opts) ->
-    Req0 = cowboy_req:reply(200, 
-        #{<<"content-type">> => <<"text/plain">>},
-            <<"Hello Erlang">>,
-            Req),
-    {ok, Req0, Opts}.
+    {ok, Req, Opts}.
 
 handle(Req, State) ->
     io:format("Received request~n"),
