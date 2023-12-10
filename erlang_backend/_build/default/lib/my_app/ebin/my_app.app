@@ -5,6 +5,7 @@
               {mod,{my_app_app,[]}},
               {applications,[kernel,stdlib,cowboy,jsx]},
               {env,[]},
-              {modules,[http_handler,my_app_app,my_app_sup,session_handler]},
+              {modules,[my_app_app,my_app_sup,session_handler,sh,user_manager,
+                        websocket_handler]},
               {licenses,["Apache-2.0"]},
               {links,[]}]}.

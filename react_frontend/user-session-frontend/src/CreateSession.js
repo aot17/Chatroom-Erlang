@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import './CreateSession.css'; // Import CSS file for styling
+import React, { useState, useEffect } from 'react';
+import './CreateSession.css';
 
 function CreateSession() {
   const [username, setUsername] = useState('');
@@ -7,18 +7,43 @@ function CreateSession() {
   const [messages, setMessages] = useState([]);
   const [userCreated, setUserCreated] = useState(false);
 
-  const handleCreateUser = async () => {
-    // Logic to create user in Erlang key-value store
-    // For now, we just simulate user creation
+  // WebSocket connection
+  const socket = new WebSocket('ws://localhost:8080/sessions');
+
+  // Handle WebSocket events
+  useEffect(() => {
+    socket.addEventListener('open', (event) => {
+      console.log('WebSocket connection opened:', event);
+    });
+
+    socket.addEventListener('message', (event) => {
+      console.log('Recieved message', event);
+      const data = JSON.parse(event.data);
+      console.log('Parsed message data:', data);
+      setMessages([...messages, { username: data.username, message: data.message }]);
+    });
+
+    socket.addEventListener('close', (event) => {
+      console.log('WebSocket connection closed:', event);
+    });
+
+    return () => {
+      // Clean up WebSocket on component unmount
+      socket.close();
+    };
+  }, [messages]); // Include dependencies to prevent unnecessary reconnects
+
+  // Function to create user and initiate WebSocket connection
+  const handleCreateUser = () => {
     setUserCreated(true);
-    // You need to replace this with a POST request to your Erlang backend
+    socket.send(JSON.stringify({ type: 'user-created', username }));
   };
 
-  const handleSendMessage = async (event) => {
+  // Function to send message via WebSocket
+  const handleSendMessage = (event) => {
     event.preventDefault();
-    // Logic to send message - this will be similar to what you already have
-    setMessages([...messages, { username, message }]);
-    setMessage(''); // Clear message input after sending
+    socket.send(JSON.stringify({ type: 'send-message', username, message }));
+    setMessage('');
   };
 
   return (
@@ -44,9 +69,11 @@ function CreateSession() {
             />
             <button type="submit">Send Message</button>
           </form>
-          <div className ="message-box">
+          <div className="message-box">
             {messages.map((msg, index) => (
-              <p key={index}><b>{msg.username}:</b> {msg.message}</p>
+              <p key={index}>
+                <b>{msg.username}:</b> {msg.message}
+              </p>
             ))}
           </div>
         </div>
