@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <h1>WebSocket Test</h1>
+
+    <form id="form">
+        <label>
+            Username:
+            <input type="text" id="username" placeholder="Username">
+        </label>
+        <br>
+        <label>
+            Message:
+            <input type="text" id="message" placeholder="Message" autofocus>
+        </label>
+        <br>
+        <button type="submit">Send Message</button>
+    </form>
+
+    <ul id="messagesList"></ul>
+
+    <script>
+    const socket = new WebSocket("ws://localhost:8080/sessions");
+
+    socket.addEventListener("open", function(event) {
+        console.log("Connected to WebSocket server.");
+    });
+
+    socket.addEventListener("message", function(event) {
+        console.log("Message from server:", event.data);
+        const node = document.createElement("li");
+        node.appendChild(document.createTextNode(event.data));
+        document.getElementById("messagesList").appendChild(node);
+    });
+
+    document.getElementById("form").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const username = document.getElementById("username").value;
+        const message = document.getElementById("message").value;
+
+        // Determine message type based on the message content
+        const messageType = message ? "send-message" : "user-created";
+        const data = JSON.stringify({ type: messageType, username, message });
+
+        socket.send(data);
+    });
+
+    socket.addEventListener("close", function(event) {
+        console.log("WebSocket connection closed.");
+    });
+    </script>
+</body>
+</html>
+

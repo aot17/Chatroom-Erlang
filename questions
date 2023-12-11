@@ -1,0 +1,33 @@
+Questions : 
+
+ - Login : 
+ 	- login on webpage (or just a create session)
+ 	- create session with unique userId
+ 	- comment est-ce que le systeme reconnait l'id de la personne qui envoye les messages.
+ 	- envoyer des messages entre les utilisateurs, sorte de forum.
+ 	- comment est-ce que c'est un systeme distribuer 	
+ 	
+ - Keyvalue store : 
+ 	- 1 layer ? userID - Data
+ 	- plusieurs layers UserID - SessionID - Data
+ 
+ - séparer les codes dans differents file ou file entier ?
+ 	- si oui, comment séparé ?
+ 	
+ -react : 
+ 	- rebar3 utile ?
+ 	- cowboy ? 
+ 	
+ - architecture :
+ 	- backend erlang : keyvalues store, rebar3 dependency management, api in erlang
+ 	- front end : page simple react node
+ 	- webserver : link with cowboy http api call
+ 	
+ - docker :
+ 	- put everything together in a docker image so it is usable without having to install cowboy rebar3
+ 	
+ - problème pour comprendre exactement le role du key value store ici et le challenge
+ - Est-ce que le challenge de ce projet ne se trouve pas plus dans la mise en place de l'architecture globale ?
+ 
+ 
+ 	
