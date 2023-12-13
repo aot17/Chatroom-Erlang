@@ -1,0 +1,35 @@
+version: '3'
+services:
+  backend:
+    build: ./erlang_backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./erlang_backend:/usr/src/app
+
+  frontend1:
+    build: ./react_frontend/user-session-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./react_frontend/user-session-frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - PORT=3000
+    depends_on:
+      - backend
+
+  frontend2:
+    build: ./react_frontend/user-session-frontend
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./react_frontend/user-session-frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - PORT=3000
+    depends_on:
+      - backend
+

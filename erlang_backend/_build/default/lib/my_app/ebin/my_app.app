@@ -3,7 +3,7 @@
               {vsn,"0.1.0"},
               {registered,[]},
               {mod,{my_app_app,[]}},
-              {applications,[kernel,stdlib,cowboy,jsx]},
+              {applications,[kernel,stdlib,cowboy,jsx,gproc]},
               {env,[]},
               {modules,[my_app_app,my_app_sup,session_handler,sh,user_manager,
                         websocket_handler]},
