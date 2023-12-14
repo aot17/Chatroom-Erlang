@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Create a user</h1>
+        <h1>Join the Chatroom</h1>
         <CreateSession />
       </header>
     </div>

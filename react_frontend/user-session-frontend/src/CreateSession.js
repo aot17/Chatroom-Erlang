@@ -7,15 +7,28 @@ function CreateSession() {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [userCreated, setUserCreated] = useState(false);
+  const [participants, setParticipants] = useState([]);
 
   useEffect(() => {
     const handleMessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        setMessages(prevMessages => [...prevMessages, { username: data.username, message: data.message }]);
+        console.log(data); // Log to see what data is being received
+        if (data.type === 'chat-message') {
+          setMessages(prevMessages => [...prevMessages, { username: data.username, message: data.message }]);
+        } else if (data.type === 'user-joined') {
+          // Add new participant to the list
+          setParticipants(prevParticipants => {
+            const newParticipants = [...prevParticipants, data.username];
+            console.log(newParticipants);
+            return newParticipants;
+          });
+          // Display a system message for a user joining
+          setMessages(prevMessages => [...prevMessages, { username: data.username, message: data.message }]);
+        }
+        // Handle other message types as needed
       } catch (error) {
         console.error('Error parsing message data:', error);
-        // Handle non-JSON messages or log for debugging
         console.log('Received non-JSON message:', event.data);
       }
     };
@@ -68,6 +81,14 @@ function CreateSession() {
                 <b>{msg.username}:</b> {msg.message}
               </p>
             ))}
+          </div>
+          <div className="participants-box">
+            <h3>Participants</h3>
+            <ul>
+              {participants.map((username, index) => (
+                <li key={index}>{username}</li>
+              ))}
+            </ul>
           </div>
         </div>
       )}
