@@ -8,17 +8,19 @@ init(Req, State) ->
 
 websocket_init(State) ->
     gproc:reg({p, l, my_chatroom}),
-    %io:format("Gproc table after connection: ~p~n", [gproc:info({n, g, {websocket_ip, '_'}})]),
     {ok, State}.
 
 websocket_handle({text, Message}, State) ->
     ParsedBody = jsx:decode(Message),
     case ParsedBody of
     #{<<"type">> := <<"user-created">>, <<"username">> := Username} ->
-        %{ok, UserId} = sh:create_session(Username),
-        %io:format("User created: ~s, UserID: ~w~n", [Username, UserId]),
+        session_handler:add_participant(Username),
+        Participants = session_handler:get_participants(),
+        Response = jsx:encode(#{<<"type">> => <<"user-joined">>,
+            <<"username">> => Username,
+            <<"message">> => <<"joined the chatroom">>,
+            <<"participants">> => Participants}),
         io:format("User created: ~s~n", [Username]),
-        Response = jsx:encode(#{<<"type">> => <<"user-joined">>, <<"username">> => Username, <<"message">> => <<"joined the chatroom">>}),
         io:format("Response: ~s~n", [Response]),
         io:format("Values in my_chatroom: ~p~n", [gproc:lookup_values({p, l, my_chatroom})]),
             gproc:send({p, l, my_chatroom}, Response),

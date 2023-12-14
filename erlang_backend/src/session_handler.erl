@@ -1,34 +1,24 @@
 -module(session_handler).
--export([create_session/2, get_session/1, update_session/2, delete_session/1, init/0]).
+-export([add_participant/1, remove_participant/1, get_participants/0, init/0]).
 
--define(SESSION_STORE, session_store).
+-define(PARTICIPANTS_STORE, participants_store).
 
-% Create a session
-create_session(UserId, SessionData) ->
-    ets:insert_new(?SESSION_STORE, {UserId, SessionData}),
+% Add a participant to the chatroom
+add_participant(Username) ->
+    ets:insert(?PARTICIPANTS_STORE, {Username}),
     ok.
 
-% Retrieve a session
-get_session(UserId) ->
-    case ets:lookup(?SESSION_STORE, UserId) of
-        [] -> not_found;
-        [{_, SessionData}] -> SessionData
-    end.
-
-% Update a session
-update_session(UserId, NewSessionData) ->
-    case ets:lookup(?SESSION_STORE, UserId) of
-        [] -> not_found;
-        _ -> 
-            ets:insert(?SESSION_STORE, {UserId, NewSessionData}),
-            ok
-    end.
-
-% Delete a session
-delete_session(UserId) ->
-    ets:delete(?SESSION_STORE, UserId),
+% Remove a participant from the chatroom
+remove_participant(Username) ->
+    ets:delete(?PARTICIPANTS_STORE, Username),
     ok.
 
+% Retrieve the list of participants
+get_participants() ->
+    Participants = ets:tab2list(?PARTICIPANTS_STORE),
+    [Username || {Username} <- Participants].
+
+% Initialize the ets table for participants
 init() ->
-    ets:new(?SESSION_STORE, [named_table, set, public]),
+    ets:new(?PARTICIPANTS_STORE, [named_table, set, public]),
     ok.

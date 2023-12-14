@@ -17,12 +17,8 @@ function CreateSession() {
         if (data.type === 'chat-message') {
           setMessages(prevMessages => [...prevMessages, { username: data.username, message: data.message }]);
         } else if (data.type === 'user-joined') {
-          // Add new participant to the list
-          setParticipants(prevParticipants => {
-            const newParticipants = [...prevParticipants, data.username];
-            console.log(newParticipants);
-            return newParticipants;
-          });
+          // Update the participants list with the list from the server
+          setParticipants(data.participants);
           // Display a system message for a user joining
           setMessages(prevMessages => [...prevMessages, { username: data.username, message: data.message }]);
         }

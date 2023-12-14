@@ -10,6 +10,7 @@
 -export([start/2, stop/1]).
 
 start(_StartType, _StartArgs) ->
+    session_handler:init(),
     Dispatch = cowboy_router:compile([
         {'_', [{"/sessions", websocket_handler, []}]}
     ]),
