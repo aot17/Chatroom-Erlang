@@ -1,7 +1,7 @@
 // App.js
 import React from 'react';
 import './App.css';
-import CreateSession from './CreateSession'; // Make sure this path is correct
+import CreateSession from './CreateSession';
 
 function App() {
   return (

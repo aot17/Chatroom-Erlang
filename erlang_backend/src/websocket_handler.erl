@@ -4,17 +4,17 @@
 
 init(Req, State) ->
     {cowboy_websocket, Req, State, #{
-        idle_timeout => 3000000}}.
+        idle_timeout => 3000000}}. % Tune time limit of the websocket connection
 
 websocket_init(State) ->
-    gproc:reg({p, l, my_chatroom}),
+    gproc:reg({p, l, my_chatroom}), % Registrate user to gproc table
     {ok, State}.
 
 websocket_handle({text, Message}, State) ->
     ParsedBody = jsx:decode(Message),
     case ParsedBody of
     #{<<"type">> := <<"user-created">>, <<"username">> := Username} ->
-        session_handler:add_participant(Username),
+        session_handler:add_participant(Username), % Add participant to ETS list
         Participants = session_handler:get_participants(),
         Response = jsx:encode(#{<<"type">> => <<"user-joined">>,
             <<"username">> => Username,
@@ -26,7 +26,6 @@ websocket_handle({text, Message}, State) ->
             gproc:send({p, l, my_chatroom}, Response),
             {ok, State};
     #{<<"type">> := <<"send-message">>, <<"username">> := Username, <<"message">> := MessageText} ->
-        %% Handle send-message message
         io:format("Received message from ~s: ~s~n", [Username, MessageText]),
         Response = jsx:encode(#{<<"type">> => <<"chat-message">>, <<"username">> => Username, <<"message">> => MessageText}),
         io:format("Response: ~s~n", [Response]),
