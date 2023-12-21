@@ -1,8 +1,26 @@
-How to deploy the code and use the Chatroom application.
-1. Ensure Docker is installed and running on your system.
-2. Open a terminal and navigate to the root directory of the project.
-3. Run the command docker-compose up –-build to build and start the backend and frontend containers.
-4. Open your favorite web browser.
-5. Access http://localhost:3000/ and http://localhost:3001/ in two separate tabs or windows.
-6. Interact with the Chatroom Application via the frontend. Choose different usernames in each session to simulate multiple users.
-7. Start chatting and observe the interaction between the two chat sessions.
+# Deployment and Usage Instructions for the Chatroom Application
+
+1. Clone the Repository: 
+   git clone https://github.com/aot17/Chatroom-Erlang.git
+
+2. Install Docker: 
+   Make sure Docker is installed on your system. If not, download and install from Docker's official website.
+
+3. Navigate to the Project Directory:
+   cd Chatroom-Erlang
+
+4. Build and Start the Containers:
+   docker-compose up --build
+   Make sure the docker-compose.yml file is in the project's root directory before executing this command.
+
+5. Open the Web Browser: 
+   Launch your preferred browser.
+
+6. Access the Chatroom Application: 
+   Open http://localhost:3000/ and http://localhost:3001/ in two separate tabs or windows.
+
+7. Interact with the Chatroom Application: 
+   Choose different usernames in each session to simulate multiple users.
+
+8. Start chatting and observe the interaction between the two chat sessions.
+
