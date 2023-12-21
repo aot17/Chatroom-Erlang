@@ -1,0 +1,8 @@
+How to deploy the code and use the Chatroom application.
+1. Ensure Docker is installed and running on your system.
+2. Open a terminal and navigate to the root directory of the project.
+3. Run the command docker-compose up –-build to build and start the backend and frontend containers.
+4. Open your favorite web browser.
+5. Access http://localhost:3000/ and http://localhost:3001/ in two separate tabs or windows.
+6. Interact with the Chatroom Application via the frontend. Choose different usernames in each session to simulate multiple users.
+7. Start chatting and observe the interaction between the two chat sessions.

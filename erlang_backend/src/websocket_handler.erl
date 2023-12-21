@@ -27,7 +27,9 @@ websocket_handle({text, Message}, State) ->
             {ok, State};
     #{<<"type">> := <<"send-message">>, <<"username">> := Username, <<"message">> := MessageText} ->
         io:format("Received message from ~s: ~s~n", [Username, MessageText]),
-        Response = jsx:encode(#{<<"type">> => <<"chat-message">>, <<"username">> => Username, <<"message">> => MessageText}),
+        Response = jsx:encode(#{<<"type">> => <<"chat-message">>, 
+            <<"username">> => Username,
+            <<"message">> => MessageText}),
         io:format("Response: ~s~n", [Response]),
         io:format("Values in my_chatroom: ~p~n", [gproc:lookup_values({p, l, my_chatroom})]),
             gproc:send({p, l, my_chatroom}, Response),    
